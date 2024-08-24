@@ -10,6 +10,8 @@ Use them to answer the question if needed.
 
 export async function POST(req) {
   const data = await req.json()
+  console.log(data);
+  try{
   const pc = new Pinecone({
     apiKey: process.env.NEXT_PUBLIC_PINECONE_API_KEY,
   })
@@ -19,7 +21,7 @@ export async function POST(req) {
     apiKey: process.env.NEXT_PUBLIC_OPEN_ROUTER_API_KEY,
   }
   )
-
+  console.log('here');
   const text = data[data.length - 1].content
   const embedding = await openai.embeddings.create({
     model: 'text-embedding-3-small',
@@ -31,6 +33,8 @@ export async function POST(req) {
     includeMetadata: true,
     vector: embedding.data[0].embedding,
   })
+  console.log('results are')
+  console.log(results);
   let resultString = ''
   results.matches.forEach((match) => {
     resultString += `
@@ -72,4 +76,8 @@ export async function POST(req) {
     },
   })
   return new NextResponse(stream)
+}catch(error){
+  console.log(error);
+  return new NextResponse(error);
+}
 }  

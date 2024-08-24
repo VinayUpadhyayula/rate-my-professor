@@ -24,7 +24,7 @@ client = OpenAI(base_url="https://openrouter.ai/api/v1/embeddings",api_key=os.ge
 
 # Create embeddings for each review
 for review in data["reviews"]:
-    response = client.embeddings.create(input=review['review'], model="text-embedding-davinci-002")
+    response = client.embeddings.create(input=review['review'], model="text-embedding-3-small")
     embedding = response.data[0].embedding
     processed_data.append(
         {
